@@ -38,7 +38,6 @@ namespace App24
             {
                 var phone = phoneNum.Text;
                 var message = sms.Text;
-
                 var piSent = PendingIntent.GetBroadcast(this, 0, new Intent("SMS_SENT"), 0);
                 var piDelivered = PendingIntent.GetBroadcast(this, 0, new Intent("SMS_DELIVERED"), 0);
 
@@ -47,8 +46,8 @@ namespace App24
                     _smsManager.SendTextMessage(phone, null, message, piSent, piDelivered);
                     return;
                 }
-                else {
-
+                else
+                {
                     if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.SendSms) != (int)Permission.Granted)
                     {
                         // Permission is not granted. If necessary display rationale & request.
@@ -59,9 +58,7 @@ namespace App24
                         // We have permission, go ahead and send SMS.
                         _smsManager.SendTextMessage(phone, null, message, piSent, piDelivered);
                     }
-
                 }
-              
             };
         }
         protected override void OnResume()
@@ -93,24 +90,24 @@ namespace App24
 
         void RequestSendSMSPermission()
         {
-            Log.Info("MainActivity", "CAMERA permission has NOT been granted. Requesting permission.");
+            Log.Info("MainActivity", "Message permission has NOT been granted. Requesting permission.");
 
             if (ActivityCompat.ShouldShowRequestPermissionRationale(this, Manifest.Permission.SendSms))
             {
                 // Provide an additional rationale to the user if the permission was not granted
                 // and the user would benefit from additional context for the use of the permission.
                 // For example if the user has previously denied the permission.
-                Log.Info("MainActivity", "Displaying camera permission rationale to provide additional context.");
+                Log.Info("MainActivity", "Displaying message permission rationale to provide additional context.");
                 //Activity activity = CrossCurrentActivity.Current.Activity;
                 //Android.Views.View activityRootView = activity.FindViewById(Android.Resource.Id.Content);
-                Snackbar.Make(layout, "Camera permission is needed to show the camera preview.",
+                Snackbar.Make(layout, "Message permission is needed to send SMS.",
                     Snackbar.LengthIndefinite).SetAction("OK", new Action<View>(delegate (View obj) {
                         ActivityCompat.RequestPermissions(this, new String[] { Manifest.Permission.SendSms }, REQUEST_SENDSMS);
                     })).Show();
             }
             else
             {
-                // Camera permission has not been granted yet. Request it directly.
+                // Message permission has not been granted yet. Request it directly.
                 ActivityCompat.RequestPermissions(this, new String[] { Manifest.Permission.SendSms }, REQUEST_SENDSMS);
             }
         }
